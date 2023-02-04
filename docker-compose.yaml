@@ -1,0 +1,47 @@
+services:
+  rust:
+    image: rust:1.65.0-bullseye
+    volumes:
+      - type: bind
+        source: ./api
+        target: /app
+      - type: bind
+        source: ./var/cargo
+        target: /cargo
+        bind:
+          create_host_path: true
+    working_dir: /app
+    tty: true
+    restart: always
+    ports:
+      - protocol: tcp
+        published: ${WEB_PORT}
+        target: 8000
+    environment:
+      CARGO_HOME: /cargo
+    user: "${USER_ID:-1000}:${GROUP_ID:-1000}"
+    depends_on:
+      mongo:
+        condition: service_healthy
+  mongo:
+    image: mongo:6.0.2
+    restart: always
+    ports:
+      - protocol: tcp
+        published: ${MONGO_PORT}
+        target: 27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME:-aesirx}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD:-1stparty}
+    volumes:
+      - type: volume
+        source: mongo
+        target: /data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 5s
+      timeout: 10s
+      retries: 50
+      start_period: 3s
+volumes:
+  mongo: {}

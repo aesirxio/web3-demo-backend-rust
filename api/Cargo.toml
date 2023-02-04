@@ -1,0 +1,30 @@
+[package]
+name = "api"
+version = "1.0.0-alpha.1"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+uuid = { version = "1.2.1", features = ["serde", "v4"] }
+dotenv = "0.15.0"
+listenfd = "0.3"
+chrono = { version = "0.4", features = ["serde"] }
+bson = { version = "2.4.0", features = ["chrono-0_4", "uuid-0_8", "serde_with"] } # Needed for using chrono datetime in doc
+tokio = "1.22.0"
+anyhow = "1.0.66"
+env_logger = "0.9.3"
+serde = "1.0.136"
+serde_derive = "1.0"
+serde_json = {version = "1.0.89", features = ["preserve_order"]}
+lazy_static = "1.4"
+validator = { version = "0.15", features = ["derive"] }
+validator_derive = "0.16"
+url = "2.3.1"
+envy = "0.4"
+
+[dependencies.mongodb]
+version = "2.3.1"
+default-features = false
+features = ["tokio-runtime", "bson-chrono-0_4", "bson-uuid-0_8"]
