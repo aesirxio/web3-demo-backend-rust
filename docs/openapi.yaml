@@ -1,0 +1,35 @@
+openapi: "3.0.0"
+info:
+  description: AesirX Analytics Web3 Demo Backend
+  version: "1.0.0"
+  title: AesirX Analytics Web3 Demo
+  contact:
+    email: accounts@aesirx.io
+  license:
+    name: GPLv3
+    url: 'https://www.gnu.org/licenses/gpl-3.0.html'
+paths:
+  /health:
+    get:
+      summary: Gets heath status of the system
+      operationId: healthGet
+      description: Simple GET command to get a health status of the system
+      responses:
+        '200':
+          description: Health status
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/HealthItem'
+components:
+  schemas:
+    HealthItem:
+      type: object
+      properties:
+        status:
+          type: string
+          example: ok
+        version:
+          type: string
+          example: 1.0.0
